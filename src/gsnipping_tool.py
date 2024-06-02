@@ -1,5 +1,6 @@
 import pyautogui
 from pynput import mouse, keyboard
+import sys
 
 class GSnippingTool(object):
     def __init__(self) -> None:
@@ -12,8 +13,9 @@ class GSnippingTool(object):
         
         with keyboard.GlobalHotKeys (
             {
-                '<ctrl>+<alt>+f': self.__full_screenshot_callback,
-                '<ctrl>+<alt>+i': self.__part_screenshot_callback,
+                '<print_screen>+<esc>': self.__exit_callback,
+                '<print_screen>': self.__full_screenshot_callback,
+                '<home>+<shift_l>+w': self.__part_screenshot_callback,
             }
         ) as global_hot_keys:
             global_hot_keys.join()
@@ -24,6 +26,10 @@ class GSnippingTool(object):
         if not pressed:
             # Stop listener
             return False
+    
+    
+    def __exit_callback(self) -> None:
+        sys.exit()
         
     
     def __full_screenshot_callback(self) -> None:
