@@ -21,6 +21,16 @@ class GSnippingToolMainWindow(QMainWindow):
         self.new_button_action.triggered.connect(lambda: print('Pressed New'))
         self.new_button_action.setCheckable(True)
         
+        self.mode_menu = QMenu()
+        self.mode_menu.addAction("Full-screen Snip")
+        self.mode_menu.addAction("Rectangle Snip")
+        self.mode_tool_button = QToolButton(self.toolbar)
+        self.mode_tool_button.setText("Mode")
+        #self.mode_tool_button.setIcon()
+        self.mode_tool_button.setMenu(self.mode_menu)
+        self.mode_tool_button.setPopupMode(QToolButton.ToolButtonPopupMode.InstantPopup)
+        self.mode_tool_button.setCheckable(True)
+        
         self.cancel_button_action = QAction(QIcon("./icons/cancel.png"), "Cancel", self)
         self.cancel_button_action.triggered.connect(lambda: print('Pressed Cancel'))
         self.cancel_button_action.setCheckable(True)
@@ -30,6 +40,7 @@ class GSnippingToolMainWindow(QMainWindow):
         self.options_button_action.setCheckable(True)
         
         self.toolbar.addAction(self.new_button_action)
+        self.toolbar.addWidget(self.mode_tool_button)
         self.toolbar.addAction(self.cancel_button_action)
         self.toolbar.addAction(self.options_button_action)
         
