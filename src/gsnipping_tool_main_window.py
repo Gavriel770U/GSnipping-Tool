@@ -17,7 +17,8 @@ class GSnippingToolMainWindow(QMainWindow):
             text="New"
         )
         self.cancel_screenshot_button = QPushButton(
-            text="Cancel"
+            text="Cancel",
+            icon=QIcon("./icons/cancel.png")
         )
         self.options_button = QPushButton(
             text="Options"
