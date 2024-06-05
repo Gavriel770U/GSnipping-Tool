@@ -8,6 +8,7 @@ class GSnippingToolMainWindow(QMainWindow):
         super(GSnippingToolMainWindow, self).__init__(*args, **kwargs)
         
         self.setWindowTitle("GSnipping Tool")
+        self.setWindowIcon(QIcon("./icons/icon.png"))
         
         self.main_widget = QWidget()
         self.main_layout = QHBoxLayout()
@@ -22,7 +23,7 @@ class GSnippingToolMainWindow(QMainWindow):
         self.new_button_action.setCheckable(True)
         
         self.mode_menu = QMenu()
-        self.mode_menu.addAction("Full-screen Snip")
+        self.full_screen_snip_action = self.mode_menu.addAction("Full-screen Snip")
         self.mode_menu.addAction("Rectangle Snip")
         self.mode_tool_button = QToolButton(self.toolbar)
         self.mode_tool_button.setText("Mode")
