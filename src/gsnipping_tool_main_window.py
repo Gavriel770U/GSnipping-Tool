@@ -3,6 +3,7 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
 import sys
 from consts import *
+from functools import partial
 
 class GSnippingToolMainWindow(QMainWindow):
     def __init__(self, *args, **kwargs) -> None:
@@ -82,6 +83,17 @@ class GSnippingToolMainWindow(QMainWindow):
     def __set_all_action_checkable(self, actions: dict) -> None:
         for action in actions.keys():
             actions[action].setCheckable(True)
+            actions[action].triggered.connect(partial(self.__check_action, actions[action], actions))
+            
+    
+    def __check_action(self, action: QAction, actions: dict) -> None:
+        if not action.isChecked():
+            action.setChecked(True)
+        
+        for other_action in actions.keys():
+            if actions[other_action] != action:
+                actions[other_action].setChecked(False)
+            
 
 app = QApplication(sys.argv)
 
