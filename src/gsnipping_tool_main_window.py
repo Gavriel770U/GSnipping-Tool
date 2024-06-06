@@ -2,6 +2,7 @@ from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
 import sys
+from consts import *
 
 class GSnippingToolMainWindow(QMainWindow):
     def __init__(self, *args, **kwargs) -> None:
@@ -23,8 +24,13 @@ class GSnippingToolMainWindow(QMainWindow):
         self.new_button_action.setCheckable(True)
         
         self.mode_menu = QMenu()
-        self.full_screen_snip_action = self.mode_menu.addAction("Full-screen Snip")
-        self.rectangle_snip_action = self.mode_menu.addAction("Rectangle Snip")
+        self.snip_actions = {
+            FULL_SCREEN_SNIP_ACTION : self.mode_menu.addAction("Full-screen Snip"),
+            RECTANGLE_SNIP_ACTION : self.mode_menu.addAction("Rectangle Snip"),
+        }
+
+        self.__set_all_action_checkable(self.snip_actions)
+        self.snip_actions[FULL_SCREEN_SNIP_ACTION].setChecked(True)
 
         self.mode_tool_button = QToolButton(self.toolbar)
         self.mode_tool_button.setText("Mode")
@@ -35,12 +41,18 @@ class GSnippingToolMainWindow(QMainWindow):
         self.mode_tool_button.setCheckable(True)
         
         self.delay_menu = QMenu()
-        self.no_delay_action = self.delay_menu.addAction('No Delay')
-        self.one_second_delay_action = self.delay_menu.addAction('1 Second')
-        self.two_seconds_delay_action = self.delay_menu.addAction('2 Seconds')
-        self.three_seconds_delay_action = self.delay_menu.addAction('3 Seconds')
-        self.four_seconds_delay_action = self.delay_menu.addAction('4 Seconds')
-        self.five_seconds_delay_action = self.delay_menu.addAction('5 Seconds')
+        
+        self.delay_actions = {
+            NO_DELAY_ACTION : self.delay_menu.addAction('No Delay'),
+            ONE_SECOND_DELAY_ACTION : self.delay_menu.addAction('1 Second'),
+            TWO_SECONDS_DELAY_ACTION : self.delay_menu.addAction('2 Seconds'),
+            THREE_SECONDS_DELAY_ACTION : self.delay_menu.addAction('3 Seconds'),
+            FOUR_SECONDS_DELAY_ACTION : self.delay_menu.addAction('4 Seconds'),
+            FIVE_SECONDS_DELAY_ACTION : self.delay_menu.addAction('5 Seconds'),
+        }
+        
+        self.__set_all_action_checkable(self.delay_actions)
+        self.delay_actions[NO_DELAY_ACTION].setChecked(True)
         
         self.delay_tool_button = QToolButton(self.toolbar)
         self.delay_tool_button.setText("Delay")
@@ -65,6 +77,11 @@ class GSnippingToolMainWindow(QMainWindow):
         self.toolbar.addAction(self.options_button_action)
         
         self.setCentralWidget(self.main_widget)
+    
+    
+    def __set_all_action_checkable(self, actions: dict) -> None:
+        for action in actions.keys():
+            actions[action].setCheckable(True)
 
 app = QApplication(sys.argv)
 
