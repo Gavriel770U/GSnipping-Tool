@@ -30,7 +30,7 @@ class GSnippingToolMainWindow(QMainWindow):
             RECTANGLE_SNIP_ACTION : self.mode_menu.addAction("Rectangle Snip"),
         }
 
-        self.__set_all_action_checkable(self.snip_actions)
+        self.__set_all_actions_checkable(self.snip_actions)
         self.snip_actions[FULL_SCREEN_SNIP_ACTION].setChecked(True)
 
         self.mode_tool_button = QToolButton(self.toolbar)
@@ -52,7 +52,7 @@ class GSnippingToolMainWindow(QMainWindow):
             FIVE_SECONDS_DELAY_ACTION : self.delay_menu.addAction('5 Seconds'),
         }
         
-        self.__set_all_action_checkable(self.delay_actions)
+        self.__set_all_actions_checkable(self.delay_actions)
         self.delay_actions[NO_DELAY_ACTION].setChecked(True)
         
         self.delay_tool_button = QToolButton(self.toolbar)
@@ -80,7 +80,7 @@ class GSnippingToolMainWindow(QMainWindow):
         self.setCentralWidget(self.main_widget)
     
     
-    def __set_all_action_checkable(self, actions: dict) -> None:
+    def __set_all_actions_checkable(self, actions: dict) -> None:
         for action in actions.keys():
             actions[action].setCheckable(True)
             actions[action].triggered.connect(partial(self.__check_action, actions[action], actions))
