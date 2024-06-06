@@ -25,7 +25,6 @@ class GSnippingToolMainWindow(QMainWindow):
         
         self.new_button_action = QAction(QIcon("./icons/new.png"), "New", self)
         self.new_button_action.triggered.connect(partial(self.__new_button_action_callback))
-        self.new_button_action.setCheckable(True)
         
         self.mode_menu = QMenu()
         self.snip_actions = {
@@ -42,7 +41,6 @@ class GSnippingToolMainWindow(QMainWindow):
         self.mode_tool_button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.mode_tool_button.setMenu(self.mode_menu)
         self.mode_tool_button.setPopupMode(QToolButton.ToolButtonPopupMode.MenuButtonPopup)
-        self.mode_tool_button.setCheckable(True)
         
         self.delay_menu = QMenu()
         
@@ -73,15 +71,12 @@ class GSnippingToolMainWindow(QMainWindow):
         self.delay_tool_button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
         self.delay_tool_button.setMenu(self.delay_menu)
         self.delay_tool_button.setPopupMode(QToolButton.ToolButtonPopupMode.MenuButtonPopup)
-        self.delay_tool_button.setCheckable(True)
         
         self.cancel_button_action = QAction(QIcon("./icons/cancel.png"), "Cancel", self)
         self.cancel_button_action.triggered.connect(lambda: print('Pressed Cancel'))
-        self.cancel_button_action.setCheckable(True)
         
         self.options_button_action = QAction(QIcon("./icons/options.png"), "Options", self)
         self.options_button_action.triggered.connect(lambda: print('Options Pressed'))
-        self.options_button_action.setCheckable(True)
         
         self.toolbar.addAction(self.new_button_action)
         self.toolbar.addWidget(self.mode_tool_button)
