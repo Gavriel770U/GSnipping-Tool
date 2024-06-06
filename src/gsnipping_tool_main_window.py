@@ -1,7 +1,6 @@
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
-import sys
 from consts import *
 from functools import partial
 import time
@@ -130,12 +129,3 @@ class GSnippingToolMainWindow(QMainWindow):
             self.__screen_shoter.take_screenshot()
             
         self.show()
-            
-        
-
-app = QApplication(sys.argv)
-
-window = GSnippingToolMainWindow()
-window.show()
-
-app.exec()
