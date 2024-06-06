@@ -4,10 +4,14 @@ from PyQt6.QtCore import *
 import sys
 from consts import *
 from functools import partial
+import time
+from gsnipping_tool_screenshoter import GSnippingToolScreenShoter
 
 class GSnippingToolMainWindow(QMainWindow):
     def __init__(self, *args, **kwargs) -> None:
         super(GSnippingToolMainWindow, self).__init__(*args, **kwargs)
+        
+        self.__screen_shoter = GSnippingToolScreenShoter()
         
         self.setWindowTitle("GSnipping Tool")
         self.setWindowIcon(QIcon("./icons/icon.png"))
@@ -21,7 +25,7 @@ class GSnippingToolMainWindow(QMainWindow):
         self.addToolBar(self.toolbar)
         
         self.new_button_action = QAction(QIcon("./icons/new.png"), "New", self)
-        self.new_button_action.triggered.connect(lambda: print('Pressed New'))
+        self.new_button_action.triggered.connect(partial(self.__new_button_action_callback))
         self.new_button_action.setCheckable(True)
         
         self.mode_menu = QMenu()
@@ -52,6 +56,15 @@ class GSnippingToolMainWindow(QMainWindow):
             FIVE_SECONDS_DELAY_ACTION : self.delay_menu.addAction('5 Seconds'),
         }
         
+        self.delay_values = {
+            NO_DELAY_ACTION : 0,
+            ONE_SECOND_DELAY_ACTION : 1,
+            TWO_SECONDS_DELAY_ACTION : 2,
+            THREE_SECONDS_DELAY_ACTION : 3,
+            FOUR_SECONDS_DELAY_ACTION : 4,
+            FIVE_SECONDS_DELAY_ACTION : 5,
+        }
+        
         self.__set_all_actions_checkable(self.delay_actions)
         self.delay_actions[NO_DELAY_ACTION].setChecked(True)
         
@@ -80,13 +93,13 @@ class GSnippingToolMainWindow(QMainWindow):
         self.setCentralWidget(self.main_widget)
     
     
-    def __set_all_actions_checkable(self, actions: dict) -> None:
+    def __set_all_actions_checkable(self, actions: dict[QAction]) -> None:
         for action in actions.keys():
             actions[action].setCheckable(True)
             actions[action].triggered.connect(partial(self.__check_action, actions[action], actions))
             
     
-    def __check_action(self, action: QAction, actions: dict) -> None:
+    def __check_action(self, action: QAction, actions: dict[QAction]) -> None:
         if not action.isChecked():
             action.setChecked(True)
         
@@ -94,6 +107,31 @@ class GSnippingToolMainWindow(QMainWindow):
             if actions[other_action] != action:
                 actions[other_action].setChecked(False)
             
+    
+    def __new_button_action_callback(self) -> None:
+        delay = 0
+        snip_mode = ''
+        
+        for action in self.delay_actions.keys():
+            if self.delay_actions[action].isChecked():
+                delay = self.delay_values[action]
+                break
+        
+        for action in self.snip_actions.keys():
+            if self.snip_actions[action].isChecked():
+                snip_mode = action
+                break
+        
+        self.hide()
+        
+        time.sleep(delay)
+        
+        if FULL_SCREEN_SNIP_ACTION == snip_mode:
+            self.__screen_shoter.take_screenshot()
+            
+        self.show()
+            
+        
 
 app = QApplication(sys.argv)
 
