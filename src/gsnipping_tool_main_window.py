@@ -1,3 +1,4 @@
+import ctypes
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
@@ -74,6 +75,7 @@ class GSnippingToolMainWindow(QMainWindow):
         
         self.cancel_button_action = QAction(QIcon("./icons/cancel.png"), "Cancel", self)
         self.cancel_button_action.triggered.connect(lambda: print('Pressed Cancel'))
+        self.cancel_button_action.setDisabled(True)
         
         self.options_button_action = QAction(QIcon("./icons/options.png"), "Options", self)
         self.options_button_action.triggered.connect(lambda: print('Options Pressed'))
@@ -116,6 +118,8 @@ class GSnippingToolMainWindow(QMainWindow):
                 snip_mode = action
                 break
         
+        self.cancel_button_action.setEnabled(True)
+        
         self.hide()
         
         time.sleep(delay)
@@ -124,3 +128,5 @@ class GSnippingToolMainWindow(QMainWindow):
             self.__screen_shoter.take_screenshot()
             
         self.show()
+        
+        self.cancel_button_action.setDisabled(True)
