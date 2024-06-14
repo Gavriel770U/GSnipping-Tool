@@ -76,6 +76,8 @@ class GSnippingToolCapture(QWidget):
         rect = self.get_rectangle()
         screenshot = screen.grabWindow(0, rect.left(), rect.top(), rect.width(), rect.height())
         screenshot.save("./snip.png", "png")
+        clipboard = QGuiApplication.clipboard()
+        clipboard.setPixmap(screenshot)
     
     
     def capture_full_screen_and_exit(self) -> None:
@@ -90,6 +92,8 @@ class GSnippingToolCapture(QWidget):
 
         screenshot = screen.grabWindow(0)
         screenshot.save("./snip.png", "png")
+        clipboard = QGuiApplication.clipboard()
+        clipboard.setPixmap(screenshot)
         QApplication.restoreOverrideCursor()
         self.__main_window.show()
         self.close()
