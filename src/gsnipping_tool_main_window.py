@@ -122,15 +122,13 @@ class GSnippingToolMainWindow(QMainWindow):
         time.sleep(delay)
         
         if FULL_SCREEN_SNIP_ACTION == snip_mode:
-            self.capture = GSnippingToolCapture()
+            self.capture = GSnippingToolCapture(self, True)
             self.capture.show()
-            self.capture.destroyed.connect(self.show)
 
 
         elif RECTANGLE_SNIP_ACTION == snip_mode:
-            self.capture = GSnippingToolCapture()
+            self.capture = GSnippingToolCapture(self)
             self.capture.show()
-            self.capture.destroyed.connect(self.show)
-
+        
 
         self.cancel_button_action.setDisabled(True)
