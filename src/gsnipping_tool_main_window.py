@@ -1,18 +1,15 @@
-import ctypes
 from PyQt6.QtGui import *
 from PyQt6.QtWidgets import *
 from PyQt6.QtCore import *
 from consts import *
 from functools import partial
 import time
-from gsnipping_tool_screenshoter import GSnippingToolScreenShoter
+from gsnipping_tool_capture import GSnippingToolCapture
 
 class GSnippingToolMainWindow(QMainWindow):
     def __init__(self, *args, **kwargs) -> None:
         super(GSnippingToolMainWindow, self).__init__(*args, **kwargs)
-        
-        self.__screen_shoter = GSnippingToolScreenShoter()
-        
+                
         self.setWindowTitle("GSnipping Tool")
         self.setWindowIcon(QIcon("./icons/icon.png"))
         
@@ -25,7 +22,7 @@ class GSnippingToolMainWindow(QMainWindow):
         self.addToolBar(self.toolbar)
         
         self.new_button_action = QAction(QIcon("./icons/new.png"), "New", self)
-        self.new_button_action.triggered.connect(partial(self.__new_button_action_callback))
+        self.new_button_action.triggered.connect(self.__new_button_action_callback)
         
         self.mode_menu = QMenu()
         self.snip_actions = {
@@ -107,26 +104,33 @@ class GSnippingToolMainWindow(QMainWindow):
     def __new_button_action_callback(self) -> None:
         delay = 0
         snip_mode = ''
-        
+
         for action in self.delay_actions.keys():
             if self.delay_actions[action].isChecked():
                 delay = self.delay_values[action]
                 break
-        
+
         for action in self.snip_actions.keys():
             if self.snip_actions[action].isChecked():
                 snip_mode = action
                 break
-        
+
         self.cancel_button_action.setEnabled(True)
-        
+
         self.hide()
-        
+
         time.sleep(delay)
         
         if FULL_SCREEN_SNIP_ACTION == snip_mode:
-            self.__screen_shoter.take_screenshot()
-            
-        self.show()
-        
+            self.capture = GSnippingToolCapture()
+            self.capture.show()
+            self.capture.destroyed.connect(self.show)
+
+
+        elif RECTANGLE_SNIP_ACTION == snip_mode:
+            self.capture = GSnippingToolCapture()
+            self.capture.show()
+            self.capture.destroyed.connect(self.show)
+
+
         self.cancel_button_action.setDisabled(True)
