@@ -6,7 +6,7 @@ from PyQt6.QtCore import QThread, pyqtSignal, Qt
 
 def add_to_registry() -> None:
     key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, winreg.KEY_ALL_ACCESS)
-    winreg.SetValueEx(key, "gsnipping_tool_reg", 0, winreg.REG_SZ, __file__.replace('.py', '.exe'))
+    winreg.SetValueEx(key, "gsnipping_tool_reg", 0, winreg.REG_SZ, "C:\\Program Files (x86)\\Common Files\\GSnipping-Tool\\gsnipping_tool_background_shortcuts.exe")
     key.Close()
     
 
