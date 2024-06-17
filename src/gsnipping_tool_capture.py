@@ -55,7 +55,8 @@ class GSnippingToolCapture(QWidget):
         self.close()
         self.capture_snip()
         QApplication.restoreOverrideCursor()
-        self.__main_window.show()
+        if self.__main_window:
+            self.__main_window.show()
         
         
     def get_rectangle(self) -> QRect:
@@ -95,6 +96,7 @@ class GSnippingToolCapture(QWidget):
         clipboard = QGuiApplication.clipboard()
         clipboard.setPixmap(screenshot)
         QApplication.restoreOverrideCursor()
-        self.__main_window.show()
+        if self.__main_window:
+            self.__main_window.show()
         self.close()
 
