@@ -7,7 +7,7 @@ class GSnippingToolCapture(QWidget):
     def __init__(self, main_window, is_full_screen: bool = False) -> None:
         super().__init__()
         self.setWindowTitle("Snipping Tool")
-        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint | Qt.WindowType.Tool)
         self.setWindowState(Qt.WindowState.WindowFullScreen)
         self.setWindowOpacity(0.3)
         self.begin = None

@@ -18,7 +18,7 @@ class SnippingToolCaptureApp(QMainWindow):
         super().__init__()
         self.hide()
         self.setWindowOpacity(0.0)
-        self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Tool)
         self.trigger_full_snip.connect(self.full_screen_snip)
         self.trigger_rect_snip.connect(self.rectangle_snip)
 
