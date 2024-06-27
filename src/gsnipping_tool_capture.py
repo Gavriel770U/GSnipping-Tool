@@ -1,9 +1,10 @@
 import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QLabel
-from PyQt6.QtGui import QPainter, QGuiApplication, QPen
-from PyQt6.QtCore import Qt, QRect, QTimer, QPointF
+from PyQt6.QtWidgets import *
+from PyQt6.QtGui import *
+from PyQt6.QtCore import *
 import ctypes
 import pyautogui
+import time
 
 class GSnippingToolCapture(QWidget):
     def __init__(self, main_window, is_full_screen: bool = False) -> None:
@@ -28,6 +29,11 @@ class GSnippingToolCapture(QWidget):
         
         self.setMouseTracking(True)
 
+        if self.__main_window:
+            self.__main_window.hide()
+        
+        time.sleep(0.35)
+
         self.freeze = QGuiApplication.primaryScreen()
         self.freeze_screenshot = self.freeze.grabWindow(0)
         # in case where the start menu is opened
@@ -46,7 +52,7 @@ class GSnippingToolCapture(QWidget):
             SWP_NOMOVE = 0x0002
             SWP_NOSIZE = 0x0001
             ctypes.windll.user32.SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE)
-
+            
 
     def paintEvent(self, event) -> None:
         qp = QPainter(self)
@@ -127,3 +133,14 @@ class GSnippingToolCapture(QWidget):
             self.__main_window.show()
         self.close()
 
+
+    def keyPressEvent(self, event: QKeyEvent) -> None:
+        key = event.key()
+        if key == Qt.Key.Key_Escape:
+            print("Escape key pressed")
+            QApplication.restoreOverrideCursor()
+            if self.__main_window:
+                self.__main_window.show()
+            self.close()
+        else:
+            super().keyPressEvent(event)
