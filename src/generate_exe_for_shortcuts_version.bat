@@ -1,3 +1,3 @@
 @echo off
 
-pyinstaller --noconsole --onefile --nowindowed gsnipping_tool_background_shortcuts.py
+pyinstaller --noconsole --onefile --windowed gsnipping_tool_background_shortcuts.py
