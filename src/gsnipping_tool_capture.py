@@ -136,11 +136,15 @@ class GSnippingToolCapture(QWidget):
 
     def keyPressEvent(self, event: QKeyEvent) -> None:
         key = event.key()
-        if key == Qt.Key.Key_Escape:
-            print("Escape key pressed")
-            QApplication.restoreOverrideCursor()
-            if self.__main_window:
-                self.__main_window.show()
-            self.close()
-        else:
-            super().keyPressEvent(event)
+        if Qt.Key.Key_Escape == key:
+            self.__close()
+        elif Qt.Key.Key_Meta == key:
+            self.__close()
+        super(GSnippingToolCapture, self).keyPressEvent(event)
+
+
+    def __close(self) -> None:
+        QApplication.restoreOverrideCursor()
+        if self.__main_window:
+            self.__main_window.show()
+        self.close()
