@@ -36,10 +36,9 @@ class GSnippingToolCapture(QWidget):
 
         self.freeze = QGuiApplication.primaryScreen()
         self.freeze_screenshot = self.freeze.grabWindow(0)
+        
         # in case where the start menu is opened
-        current_mouse_x, current_mouse_y = pyautogui.position()
-        pyautogui.click(1, 1)
-        pyautogui.moveTo(current_mouse_x, current_mouse_y)
+        pyautogui.press(['esc'])
 
         if self.__is_full_screen:
             QTimer.singleShot(100, self.capture_full_screen_and_exit)
