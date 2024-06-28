@@ -25,6 +25,8 @@ class GSnippingToolCapture(QWidget):
         self.__main_window = main_window
         self.__is_full_screen = is_full_screen
         
+        self.installEventFilter(self)
+        
         QApplication.setOverrideCursor(Qt.CursorShape.CrossCursor)
         
         self.setMouseTracking(True)
@@ -53,7 +55,11 @@ class GSnippingToolCapture(QWidget):
             SWP_NOMOVE = 0x0002
             SWP_NOSIZE = 0x0001
             ctypes.windll.user32.SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE)
-            
+
+        close_shortcut_winkey_tab = QKeySequence(Qt.Key.Key_Meta + Qt.Key.Key_Tab)
+        self.close_shortcut_winkey_tab = QShortcut(close_shortcut_winkey_tab, self)
+        self.close_shortcut_winkey_tab.activated.connect(self.__close)
+
 
     def paintEvent(self, event) -> None:
         qp = QPainter(self)
@@ -145,7 +151,8 @@ class GSnippingToolCapture(QWidget):
 
 
     def __close(self) -> None:
+        print("Closing")
         QApplication.restoreOverrideCursor()
         if self.__main_window:
             self.__main_window.show()
-        self.close()
+        self.close()            
