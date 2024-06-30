@@ -13,14 +13,20 @@ def add_to_registry() -> None:
 class SnippingToolCaptureApp(QMainWindow):
     trigger_full_snip = pyqtSignal()
     trigger_rect_snip = pyqtSignal()
+    trigger_alt_tab = pyqtSignal()
+    trigger_cmd_tab = pyqtSignal()
 
     def __init__(self) -> None:
         super().__init__()
         self.hide()
         self.setWindowOpacity(0.0)
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Tool)
+        self.capture = None
+
         self.trigger_full_snip.connect(self.full_screen_snip)
         self.trigger_rect_snip.connect(self.rectangle_snip)
+        self.trigger_alt_tab.connect(self.close_capture)
+        self.trigger_cmd_tab.connect(self.close_capture)
 
 
     def full_screen_snip(self) -> None:
@@ -33,17 +39,26 @@ class SnippingToolCaptureApp(QMainWindow):
         self.capture = GSnippingToolCapture(self)
         self.capture.show()
         self.hide()
-
+        
+    
+    def close_capture(self) -> None:
+        if self.capture:
+            self.capture.close()
+            
 
 class HotkeyListener(QThread):
     full_snip = pyqtSignal()
     rect_snip = pyqtSignal()
+    alt_tab = pyqtSignal()
+    cmd_tab = pyqtSignal()
 
     def run(self) -> None:
         hotkeys = keyboard.GlobalHotKeys(
             {
                 '<alt>+f': self.full_snip.emit,
                 '<alt>+s': self.rect_snip.emit,
+                '<alt>+<tab>': self.alt_tab.emit,
+                '<cmd>+<tab>': self.cmd_tab.emit,
             }
         )
         hotkeys.start()
@@ -60,6 +75,8 @@ def main() -> None:
     listener_thread = HotkeyListener()
     listener_thread.full_snip.connect(main_window.trigger_full_snip)
     listener_thread.rect_snip.connect(main_window.trigger_rect_snip)
+    listener_thread.alt_tab.connect(main_window.trigger_alt_tab)
+    listener_thread.cmd_tab.connect(main_window.trigger_cmd_tab)
     listener_thread.start()
 
     main_window.show()
