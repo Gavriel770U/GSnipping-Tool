@@ -3,8 +3,12 @@ from PyQt6.QtWidgets import *
 from PyQt6.QtGui import *
 from PyQt6.QtCore import *
 import ctypes
+from pynput import keyboard
 import pyautogui
 import time
+from consts import *
+from gsnipping_tool_close_combinations_key_listener import GSnippingToolCloseCombinationsKeyListener
+
 
 class GSnippingToolCapture(QWidget):
     def __init__(self, main_window, is_full_screen: bool = False) -> None:
@@ -24,6 +28,8 @@ class GSnippingToolCapture(QWidget):
         
         self.__main_window = main_window
         self.__is_full_screen = is_full_screen
+        
+        self.installEventFilter(self)
         
         QApplication.setOverrideCursor(Qt.CursorShape.CrossCursor)
         
@@ -53,7 +59,12 @@ class GSnippingToolCapture(QWidget):
             SWP_NOMOVE = 0x0002
             SWP_NOSIZE = 0x0001
             ctypes.windll.user32.SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE)
-            
+        
+        
+        self.__close_combinations_key_listener = GSnippingToolCloseCombinationsKeyListener()
+        self.__close_combinations_key_listener.key_pressed.connect(self.__on_close_combination_detected)
+        self.__close_combinations_key_listener.start()
+        
 
     def paintEvent(self, event) -> None:
         qp = QPainter(self)
@@ -135,17 +146,13 @@ class GSnippingToolCapture(QWidget):
         self.close()
 
 
-    def keyPressEvent(self, event: QKeyEvent) -> None:
-        key = event.key()
-        if Qt.Key.Key_Escape == key:
-            self.__close()
-        elif Qt.Key.Key_Meta == key:
-            self.__close()
-        super(GSnippingToolCapture, self).keyPressEvent(event)
-
-
     def __close(self) -> None:
+        print("Closing")
         QApplication.restoreOverrideCursor()
         if self.__main_window:
             self.__main_window.show()
-        self.close()
+        self.close()            
+
+
+    def __on_close_combination_detected(self, key):
+            self.__close()

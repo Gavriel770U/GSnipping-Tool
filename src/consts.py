@@ -1,3 +1,10 @@
+from pynput import keyboard
+
+ESC_COMBINATION: dict = {keyboard.Key.esc}
+CMD_COMBINATION: dict = {keyboard.Key.cmd}
+LALT_TAB_COMBINATION: dict = {keyboard.Key.alt_l, keyboard.Key.tab}
+CMD_TAB_COMBINATION: dict = {keyboard.Key.cmd, keyboard.Key.tab}
+
 FULL_SCREEN_SNIP_ACTION: str = 'full_screen_snip_action'
 RECTANGLE_SNIP_ACTION: str = 'rectangle_snip_action'
 
