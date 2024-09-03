@@ -56,9 +56,13 @@ class GSnippingToolCapture(QWidget):
             SWP_NOSIZE = 0x0001
             ctypes.windll.user32.SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE)
 
-        close_shortcut_winkey_tab = QKeySequence(Qt.Key.Key_Meta + Qt.Key.Key_Tab)
-        self.close_shortcut_winkey_tab = QShortcut(close_shortcut_winkey_tab, self)
-        self.close_shortcut_winkey_tab.activated.connect(self.__close)
+        # close_shortcut_winkey_tab = QKeySequence(Qt.Key.Key_Meta + Qt.Key.Key_Tab)
+        # self.close_shortcut_winkey_tab = QShortcut(close_shortcut_winkey_tab, self)
+        # self.close_shortcut_winkey_tab.activated.connect(self.__close)
+        
+        # close_shortcut_alt_tab = QKeySequence(Qt.Key.Key_Alt + Qt.Key.Key_Tab)
+        # self.close_shortcut_alt_tab = QShortcut(close_shortcut_alt_tab, self)
+        # self.close_shortcut_alt_tab.activated.connect(self.__close)
 
 
     def paintEvent(self, event) -> None:
@@ -141,13 +145,13 @@ class GSnippingToolCapture(QWidget):
         self.close()
 
 
-    def keyPressEvent(self, event: QKeyEvent) -> None:
-        key = event.key()
-        if Qt.Key.Key_Escape == key:
-            self.__close()
-        elif Qt.Key.Key_Meta == key:
-            self.__close()
-        super(GSnippingToolCapture, self).keyPressEvent(event)
+    # def keyPressEvent(self, event: QKeyEvent) -> None:
+    #     key = event.key()
+    #     if Qt.Key.Key_Escape == key:
+    #         self.__close()
+    #     elif Qt.Key.Key_Meta == key:
+    #         self.__close()
+    #     super(GSnippingToolCapture, self).keyPressEvent(event)
 
 
     def __close(self) -> None:
