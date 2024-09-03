@@ -1,3 +1,4 @@
 @echo off
 
-pyinstaller --noconsole --onefile --windowed main.py
+pyinstaller --noconsole --onedir --windowed main.py
+pause
